@@ -11,8 +11,8 @@ const Header = () => {
   const cartCount = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault(); // prevent page reload
-    applySearch(); // apply search only when button is clicked
+    e.preventDefault();
+    applySearch();
   };
 
   return (
