@@ -125,9 +125,6 @@ const ProductsDetail = () => {
         </div>
 
         <hr className="my-5" />
-        <h5 className="mb-4">More items you may like</h5>
-
-        <div className="row g-3">{}</div>
       </div>
     </>
   );
