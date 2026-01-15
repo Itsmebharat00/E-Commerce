@@ -5,10 +5,12 @@ import useCartContext from "../contexts/CartContext";
 import useProductContext from "../contexts/ProductContext";
 
 const Header = () => {
-  const { cartItems } = useCartContext();
+  const { cartItems, wishlist } = useCartContext();
   const { searchInput, setSearchInput, applySearch } = useProductContext();
 
   const cartCount = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
+  const wishListCount = wishlist?.length;
+  console.log(wishListCount);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +21,7 @@ const Header = () => {
     <nav className="navbar navbar-expand-lg bg-body-tertiary px-3">
       <div className="container-fluid">
         <Link className="navbar-brand fw-bold" to="/">
-          A to Z Kart
+          <h1>Style Kart </h1>
         </Link>
 
         <button
@@ -52,7 +54,7 @@ const Header = () => {
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/wishlist">
-                ❤️ Wishlist
+                ❤️ Wishlist ({wishListCount})
               </Link>
             </li>
 
