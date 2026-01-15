@@ -3,7 +3,7 @@ import useCartContext from "../contexts/CartContext";
 import { Link } from "react-router-dom";
 
 const Wishlist = () => {
-  const { wishlist, removeFromWishlist, addToCart } = useCartContext();
+  const { wishlist, removeFromWishlist, moveToCart } = useCartContext();
 
   if (wishlist.length === 0) {
     return (
@@ -15,8 +15,7 @@ const Wishlist = () => {
 
   return (
     <div className="container mt-4">
-      <h3 className="mb-4">My Wishlist</h3>
-
+      <h3 className="mb-4">My Wishlist </h3>
       <div className="row">
         {wishlist?.map((item) => (
           <div className="col-md-4 mb-4" key={item._id}>
@@ -36,7 +35,7 @@ const Wishlist = () => {
 
                 <button
                   className="btn btn-primary mb-2"
-                  onClick={() => addToCart(item)}
+                  onClick={() => moveToCart(item)}
                 >
                   Add to Cart
                 </button>

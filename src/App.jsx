@@ -16,6 +16,9 @@ import AddressManagement from "./pages/AddressManagement.jsx";
 import OrderCheckout from "./pages/OrderCheckout.jsx";
 import { ProductsProvider } from "./contexts/ProductContext.jsx";
 import { AddressProvider } from "./contexts/AddressContext.jsx";
+import Footer from "./components/Footer.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -25,27 +28,44 @@ function App() {
           <ProductsProvider>
             <AddressProvider>
               <Router>
-                <Header />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/wishlist" element={<Wishlist />} />
-                  <Route
-                    path="/products/category/:categoryName"
-                    element={<ProductsListing />}
+                <div className="d-flex flex-column min-vh-100">
+                  <Header />
+
+                  <main className="flex-fill">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/wishlist" element={<Wishlist />} />
+                      <Route
+                        path="/products/category/:categoryName"
+                        element={<ProductsListing />}
+                      />
+                      <Route path="/products" element={<AllProducts />} />
+                      <Route
+                        path="/products/:productId"
+                        element={<ProductsDetail />}
+                      />
+                      <Route path="/userProfile" element={<UserProfile />} />
+                      <Route
+                        path="/addressManagement"
+                        element={<AddressManagement />}
+                      />
+                      <Route path="/checkout" element={<OrderCheckout />} />
+                    </Routes>
+                  </main>
+
+                  <ToastContainer
+                    position="bottom-right"
+                    autoClose={2000}
+                    newestOnTop
+                    closeOnClick
+                    pauseOnHover
+                    draggable
+                    theme="light"
                   />
-                  <Route path="/products" element={<AllProducts />} />
-                  <Route
-                    path="/products/:productId"
-                    element={<ProductsDetail />}
-                  />
-                  <Route path="/userProfile" element={<UserProfile />} />
-                  <Route
-                    path="/addressManagement"
-                    element={<AddressManagement />}
-                  />
-                  <Route path="/checkout" element={<OrderCheckout />} />
-                </Routes>
+
+                  <Footer />
+                </div>
               </Router>
             </AddressProvider>
           </ProductsProvider>

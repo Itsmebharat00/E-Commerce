@@ -44,7 +44,6 @@ const AllProducts = () => {
                   Clear
                 </button>
               </div>
-
               <h6>Category</h6>
               {[
                 "men's clothing",
@@ -68,74 +67,90 @@ const AllProducts = () => {
               <h6>Rating</h6>
               <input
                 type="range"
-                className="form-range"
+                className=""
                 min="0"
                 max="5"
                 step="1"
+                value={minRating}
                 onChange={(e) => setMinRating(Number(e.target.value))}
               />
               <small>⭐ {minRating} & above</small>
               <hr />
-              <div>
-                <h6>Sort by Price </h6>
+              <h6>Sort by Price</h6>
+              <div className="form-check">
                 <input
+                  className="form-check-input"
                   type="radio"
                   value="lowToHigh"
                   checked={selectedPrice === "lowToHigh"}
                   onChange={(e) => setSelectedPrice(e.target.value)}
-                />{" "}
-                Low to High{" "}
+                />
+                <label className="form-check-label">Low to High</label>
+              </div>
+
+              <div className="form-check">
                 <input
+                  className="form-check-input"
                   type="radio"
                   value="highToLow"
                   checked={selectedPrice === "highToLow"}
                   onChange={(e) => setSelectedPrice(e.target.value)}
-                />{" "}
-                High to Low
+                />
+                <label className="form-check-label">High to Low</label>
               </div>
             </div>
           </div>
 
           <div className="col-md-9">
             <div className="row">
-              {finalProducts?.map((item) => (
-                <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={item._id}>
-                  <div className="card h-100 shadow-sm">
-                    <Link
-                      to={`/products/${item._id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="card-img-top"
-                        style={{ height: "220px", objectFit: "cover" }}
-                      />
-                    </Link>
+              {finalProducts?.length === 0 ? (
+                <div className="text-center mt-5">
+                  <h4 className="text-danger">No Products Found</h4>
+                  <p className="text-secondary">Try changing search keywords</p>
+                </div>
+              ) : (
+                finalProducts?.map((item) => (
+                  <div
+                    className="col-lg-3 col-md-4 col-sm-6 mb-4"
+                    key={item._id}
+                  >
+                    <div className="card h-100 shadow-sm">
+                      <Link
+                        to={`/products/${item._id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="card-img-top"
+                          style={{ height: "220px", objectFit: "cover" }}
+                        />
+                      </Link>
 
-                    <div className="card-body d-flex flex-column">
-                      <h6 className="card-title">{item.title}</h6>
-                      <p className="fw-bold">${item.price}</p>
+                      <div className="card-body d-flex flex-column">
+                        <h6 className="card-title">{item.title}</h6>
+                        <p className="fw-bold">${item.price}</p>
 
-                      <div className="d-flex gap-2 mt-auto">
-                        <button
-                          className="btn btn-primary flex-fill"
-                          onClick={() => addToCart(item)}
-                        >
-                          Add to Cart
-                        </button>
+                        <div className="d-flex gap-2 mt-auto">
+                          <button
+                            className="btn btn-primary flex-fill"
+                            onClick={() => addToCart(item)}
+                          >
+                            Add to Cart
+                          </button>
 
-                        <button
-                          className="btn btn-outline-danger flex-fill"
-                          onClick={() => addToWishlist(item)}
-                        >
-                          ❤️ Wishlist
-                        </button>
+                          <button
+                            className="btn btn-outline-danger flex-fill"
+                            onClick={() => addToWishlist(item)}
+                          >
+                            ❤️ Wishlist
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>

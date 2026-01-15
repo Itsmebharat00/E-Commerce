@@ -14,6 +14,20 @@ const Cart = () => {
     moveToWishlist,
   } = useCartContext();
 
+  if (cartItems.length === 0) {
+    return (
+      <div className="container py-5 text-center">
+        <h4>Your cart is empty 🛒</h4>
+        <p className="text-secondary">
+          Looks like you haven’t added anything yet.
+        </p>
+        <Link to="/products" className="btn btn-primary mt-3">
+          Continue Shopping
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="container py-4">
       <h3 className="text-center mb-4">
@@ -61,20 +75,21 @@ const Cart = () => {
                     +
                   </button>
                 </div>
+                <div className="d-flex gap-2 mt-3">
+                  <button
+                    className="btn btn-secondary w-50"
+                    onClick={() => removeItem(item._id)}
+                  >
+                    Remove From Cart
+                  </button>
 
-                <button
-                  className="btn btn-secondary w-50 mt-3"
-                  onClick={() => removeItem(item._id)}
-                >
-                  Remove From Cart
-                </button>
-
-                <button
-                  className="btn btn-light border w-50 mt-2"
-                  onClick={() => moveToWishlist(item)}
-                >
-                  Move to Wishlist
-                </button>
+                  <button
+                    className="btn btn-light border w-50"
+                    onClick={() => moveToWishlist(item)}
+                  >
+                    Move to Wishlist
+                  </button>
+                </div>
               </div>
             </div>
           ))}

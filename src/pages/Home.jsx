@@ -20,30 +20,33 @@ const Home = () => {
   return (
     <>
       <div className="container-fluid">
-        <div
-          className="w-100"
-          style={{
-            height: "600px",
-            overflow: "hidden",
-          }}
-        >
+        <div className="w-100" style={{ height: "60vh", overflow: "hidden" }}>
           <Link to="/products" className="text-decoration-none">
-            <div className="position-relative">
+            <div className="position-relative h-100">
               <img
                 src="https://images.unsplash.com/photo-1441986300917-64674bd600d8"
                 alt="Shop All Products"
-                className="img-fluid w-100"
-                style={{ height: "80vh", objectFit: "cover" }}
+                className="img-fluid w-100 h-100"
+                style={{ objectFit: "cover" }}
               />
 
-              <div className="position-absolute top-0 start-50 translate-middle-x text-center">
-                <h1 className="text-white fw-bold">For All Products</h1>
-                <p className="text-white fs-5">Shop everything in one place</p>
-                <button className="btn btn-light mt-2">Shop Now</button>
+              <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+
+              <div className="position-absolute top-50 start-50 translate-middle text-center px-3">
+                <h1 className="text-white fw-bold display-5">
+                  For All Products
+                </h1>
+                <p className="text-white fs-5 mt-2">
+                  Shop everything in one place
+                </p>
+                <button className="btn btn-light btn-lg mt-3 px-4">
+                  Shop Now
+                </button>
               </div>
             </div>
           </Link>
         </div>
+
         <div className="container py-4">
           <div className="row g-3">
             {categories?.map((category) => (

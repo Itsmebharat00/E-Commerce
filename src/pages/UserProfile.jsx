@@ -1,6 +1,7 @@
 /** @format */
 import useAddressContext from "../contexts/AddressContext";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const UserProfile = () => {
   const {
@@ -13,6 +14,7 @@ const UserProfile = () => {
     setShowOrders,
     showAddressForm,
   } = useAddressContext();
+  const [orders, setOrders] = useState([]);
 
   const user = {
     name: "Bharat Singh",
@@ -20,20 +22,11 @@ const UserProfile = () => {
     phone: "9876543210",
   };
 
-  const orders = [
-    {
-      id: "ORD12345",
-      date: "12 Jan 2025",
-      total: "$199",
-      status: "Delivered",
-    },
-    {
-      id: "ORD12346",
-      date: "20 Jan 2025",
-      total: "$299",
-      status: "Delivered",
-    },
-  ];
+  useEffect(() => {
+    fetch("https://e-commerce-backend-theta-eosin.vercel.app/orders")
+      .then((res) => res.json())
+      .then((data) => setOrders(data));
+  }, []);
 
   return (
     <div className="container mt-4">
@@ -142,19 +135,22 @@ const UserProfile = () => {
             <h5 className="card-title">Order History</h5>
 
             {orders.map((order) => (
-              <div key={order.id} className="border rounded p-3 mb-3">
-                <p className="mb-1">
-                  <strong>Order ID:</strong> {order.id}
-                </p>
-                <p className="mb-1">
-                  <strong>Date:</strong> {order.date}
-                </p>
-                <p className="mb-1">
-                  <strong>Total:</strong> {order.total}
-                </p>
-                <p className="mb-0">
-                  <strong>Status:</strong> {order.status}
-                </p>
+              <div key={order._id} className="card mb-3">
+                <div className="card-body">
+                  <p>
+                    <strong>Order ID:</strong> {order._id}
+                  </p>
+                  <p>
+                    <strong>Total:</strong> ${order.totalAmount}
+                  </p>
+                  <p>
+                    <strong>Items:</strong> {order.items.length}
+                  </p>
+                  <p>
+                    <strong>Date:</strong>{" "}
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

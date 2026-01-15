@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import useFetch from "../useFetch";
+import { toast } from "react-toastify";
 
 const CartContext = createContext();
 
@@ -14,7 +15,7 @@ const storedData = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  const { data, loading, error } = useFetch(
+  const { data } = useFetch(
     "https://e-commerce-backend-theta-eosin.vercel.app/products"
   );
 
@@ -34,34 +35,44 @@ export const CartProvider = ({ children }) => {
 
   const moveToWishlist = (item) => {
     addToWishlist(item);
-
     removeItem(item._id);
+    toast.success("Moved to Wishlist ❤️");
+  };
+
+  const moveToCart = (product) => {
+    removeFromWishlist(product._id);
+    addToCart(product);
+    toast.success("Moved to cart 🛒");
   };
 
   const removeFromWishlist = (id) => {
     setWishlist(wishlist.filter((item) => item._id !== id));
+    toast.error("Removed from wishlist");
   };
 
   const increaseQty = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
+    setCartItems(
+      cartItems.map((item) =>
         item._id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
+    toast.success("Quantity increased");
   };
 
   const decreaseQty = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
+    setCartItems(
+      cartItems.map((item) =>
         item._id === id && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item
       )
     );
+    toast.info("Quantity decreased");
   };
 
   const removeItem = (id) => {
-    setCartItems((prev) => prev.filter((item) => item._id !== id));
+    setCartItems(cartItems.filter((item) => item._id !== id));
+    toast.error("Removed from cart");
   };
 
   const totalPrice = cartItems.reduce(
@@ -70,21 +81,14 @@ export const CartProvider = ({ children }) => {
   );
 
   const addToCart = (product) => {
-    const exists = cartItems.find(
-      (item) => item._id === product._id && item.size === product.size
-    );
+    const existing = cartItems.find((item) => item._id === product._id);
 
-    if (exists) {
-      setCartItems(
-        cartItems.map((item) =>
-          item._id === product._id && item.size === product.size
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    if (existing) {
+      toast.info("Item already in cart");
+      return;
     }
+    setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    toast.success("Added to cart 🛒");
   };
 
   const deliveryCharge = totalPrice > 199 ? 0 : 49;
@@ -109,6 +113,7 @@ export const CartProvider = ({ children }) => {
         addToWishlist,
         removeFromWishlist,
         moveToWishlist,
+        moveToCart,
       }}
     >
       {children}

@@ -8,9 +8,33 @@ const OrderCheckout = () => {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const { cartItems, finalAmount } = useCartContext();
 
-  const handleOrders = () => {
-    if (selectedAddress) {
-      setOrderPlaced(true);
+  const handleOrders = async () => {
+    if (!selectedAddress) return;
+
+    const orderData = {
+      items: cartItems,
+      totalAmount: finalAmount,
+      address: selectedAddress,
+    };
+
+    try {
+      const res = await fetch(
+        "https://e-commerce-backend-theta-eosin.vercel.app/orders",
+        {
+          method: "POST",
+          body: JSON.stringify(orderData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (res.ok) {
+        console.log("Saved order:");
+        setOrderPlaced(true);
+      } else {
+        console.log("Server error:");
+      }
+    } catch (error) {
+      console.log("Order failed", error);
     }
   };
 
