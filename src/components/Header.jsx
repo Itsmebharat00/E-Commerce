@@ -10,11 +10,12 @@ const Header = () => {
 
   const cartCount = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
   const wishListCount = wishlist?.length;
-  console.log(wishListCount);
+  // console.log(wishListCount);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     applySearch();
+    setSearchInput("");
   };
 
   return (
@@ -44,8 +45,16 @@ const Header = () => {
               type="search"
               placeholder="Search products..."
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearchInput(value);
+
+                if (value === "") {
+                  applySearch();
+                }
+              }}
             />
+
             <button className="btn btn-outline-success ms-2" type="submit">
               Search
             </button>

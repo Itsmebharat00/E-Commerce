@@ -3,38 +3,82 @@ import { useParams, Link } from "react-router-dom";
 import useFetch from "../useFetch";
 import useCartContext from "../contexts/CartContext";
 import useProductContext from "../contexts/ProductContext";
+import { useEffect } from "react";
 
 const ProductsListing = () => {
   const { addToCart, addToWishlist } = useCartContext();
   const {
+    selectedCategories,
     setSelectedCategories,
     minRating,
     setMinRating,
     selectedPrice,
     setSelectedPrice,
+    finalProducts,
   } = useProductContext();
+
   const { categoryName } = useParams();
+
   const { data } = useFetch(
-    `https://e-commerce-backend-theta-eosin.vercel.app/products/category/${categoryName}`
+    "https://e-commerce-backend-theta-eosin.vercel.app/products",
   );
-  // console.log(data);
 
-  const filteredProducts = data
-    ?.filter((item) => item.rating?.rate >= minRating)
-    .sort((a, b) => {
-      if (selectedPrice === "lowToHigh") return a.price - b.price;
-      if (selectedPrice === "highToLow") return b.price - a.price;
-      return 0;
-    });
+  useEffect(() => {
+    if (categoryName && !selectedCategories.includes(categoryName)) {
+      setSelectedCategories([categoryName]);
+    }
+  }, [categoryName]);
 
-  console.log(filteredProducts);
+  const handleCategoryChange = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category],
+    );
+  };
+
+  // const filteredProducts = data
+  //   ?.filter((item) => {
+  //     const categoryMatch =
+  //       selectedCategories.length === 0 ||
+  //       selectedCategories.includes(item.category.name);
+
+  //     const ratingMatch = item.rating.rate >= minRating;
+  //     const searchMatch =
+  //       searchQuery === "" ||
+  //       item.title?.toLowerCase().includes(searchQuery?.toLowerCase());
+
+  //     return categoryMatch && ratingMatch && searchMatch;
+  //   })
+  //   .sort((a, b) => {
+  //     if (selectedPrice === "lowToHigh") return a.price - b.price;
+  //     if (selectedPrice === "highToLow") return b.price - a.price;
+  //     return 0;
+  //   });
+
+  const categories = [
+    "men's clothing",
+    "women's clothing",
+    "electronics",
+    "jewelery",
+  ];
+
+  let headingText = "All Products";
+
+  if (selectedCategories.length === 1) {
+    headingText = `${selectedCategories[0]} Products`;
+  }
+
+  if (selectedCategories.length > 1) {
+    headingText = "Multiple Categories Products";
+  }
 
   return (
-    <div className="container-fluid my-4 ">
+    <div className="container-fluid my-4">
       <div className="row">
         <div className="col-md-2">
           <div className="p-3">
-            <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="d-flex justify-content-between mb-3">
               <h5>Filters</h5>
               <button
                 className="btn btn-sm btn-link"
@@ -48,12 +92,24 @@ const ProductsListing = () => {
               </button>
             </div>
 
+            <h6>Category</h6>
+            {categories.map((cat) => (
+              <div className="form-check" key={cat}>
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  checked={selectedCategories.includes(cat)}
+                  onChange={() => handleCategoryChange(cat)}
+                />
+                <label className="form-check-label">{cat}</label>
+              </div>
+            ))}
+
             <hr />
 
             <h6>Rating</h6>
             <input
               type="range"
-              className=""
               min="0"
               max="5"
               step="1"
@@ -67,22 +123,20 @@ const ProductsListing = () => {
             <h6>Sort by Price</h6>
             <div className="form-check">
               <input
-                className="form-check-input"
                 type="radio"
-                value="lowToHigh"
+                className="form-check-input"
                 checked={selectedPrice === "lowToHigh"}
-                onChange={(e) => setSelectedPrice(e.target.value)}
+                onChange={() => setSelectedPrice("lowToHigh")}
               />
               <label className="form-check-label">Low to High</label>
             </div>
 
             <div className="form-check">
               <input
-                className="form-check-input"
                 type="radio"
-                value="highToLow"
+                className="form-check-input"
                 checked={selectedPrice === "highToLow"}
-                onChange={(e) => setSelectedPrice(e.target.value)}
+                onChange={() => setSelectedPrice("highToLow")}
               />
               <label className="form-check-label">High to Low</label>
             </div>
@@ -91,17 +145,14 @@ const ProductsListing = () => {
 
         <div className="col-md-9">
           <div className="row">
-            <h3 className="mb-4 text-capitalize">{categoryName} Products</h3>
-            {filteredProducts?.map((product) => (
+            <h3 className="mb-4 text-capitalize">{headingText}</h3>
+            {finalProducts?.map((product) => (
               <div
                 className="col-lg-3 col-md-4 col-sm-6 mb-4"
                 key={product._id}
               >
                 <div className="card h-100 shadow-sm">
-                  <Link
-                    to={`/products/${product._id}`}
-                    className="text-decoration-none"
-                  >
+                  <Link to={`/products/${product._id}`}>
                     <img
                       src={product.image}
                       alt={product.title}
@@ -112,16 +163,19 @@ const ProductsListing = () => {
 
                   <div className="card-body d-flex flex-column">
                     <h6 className="card-title">{product.title}</h6>
-                    <p className="fw-bold mb-2">${product.price}</p>
 
-                    <div className="d-flex gap-2 mt-auto">
+                    <small className="text-warning d-block mb-1">
+                      {"⭐".repeat(Math.round(product.rating?.rate || 0))}
+                    </small>
+                    <p className="fw-bold">${product.price}</p>
+
+                    <div className="mt-auto d-flex gap-2">
                       <button
                         className="btn btn-primary flex-fill"
                         onClick={() => addToCart(product)}
                       >
                         Add to Cart
                       </button>
-
                       <button
                         className="btn btn-outline-danger flex-fill"
                         onClick={() => addToWishlist(product)}
@@ -133,6 +187,12 @@ const ProductsListing = () => {
                 </div>
               </div>
             ))}
+
+            {finalProducts?.length === 0 && (
+              <h5 className="text-danger mt-5 text-center">
+                No products found
+              </h5>
+            )}
           </div>
         </div>
       </div>

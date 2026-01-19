@@ -25,6 +25,16 @@ const AllProducts = () => {
     );
   };
 
+  let headingText = "All Products";
+
+  if (selectedCategories.length === 1) {
+    headingText = `${selectedCategories[0]} Products`;
+  }
+
+  if (selectedCategories.length > 1) {
+    headingText = "Multiple Categories Products";
+  }
+
   return (
     <>
       <div className="container-fluid my-4">
@@ -103,6 +113,7 @@ const AllProducts = () => {
 
           <div className="col-md-9">
             <div className="row">
+              <h3 className="mb-4 text-capitalize">{headingText}</h3>
               {finalProducts?.length === 0 ? (
                 <div className="text-center mt-5">
                   <h4 className="text-danger">No Products Found</h4>
@@ -129,6 +140,11 @@ const AllProducts = () => {
 
                       <div className="card-body d-flex flex-column">
                         <h6 className="card-title">{item.title}</h6>
+
+                        <small className="text-warning d-block mb-1">
+                          {"⭐".repeat(Math.round(item.rating?.rate || 0))}
+                        </small>
+
                         <p className="fw-bold">${item.price}</p>
 
                         <div className="d-flex gap-2 mt-auto">
