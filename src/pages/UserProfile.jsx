@@ -134,25 +134,37 @@ const UserProfile = () => {
           <div className="card-body">
             <h5 className="card-title">Order History</h5>
 
-            {orders.map((order) => (
-              <div key={order._id} className="card mb-3">
-                <div className="card-body">
-                  <p>
-                    <strong>Order ID:</strong> {order._id}
-                  </p>
-                  <p>
-                    <strong>Total:</strong> ${order.totalAmount}
-                  </p>
-                  <p>
-                    <strong>Items:</strong> {order.items.length}
-                  </p>
-                  <p>
-                    <strong>Date:</strong>{" "}
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </p>
+            {orders
+              .slice()
+              .reverse()
+              .map((order) => (
+                <div key={order._id} className="card mb-3">
+                  <div className="card-body">
+                    <p>
+                      <strong>Order ID:</strong> {order._id}
+                    </p>
+                    <div>
+                      <strong>Items Ordered:</strong>
+                      <ul>
+                        {order.items?.map((item) => (
+                          <li key={item._id}>
+                            {item.title} × {item.quantity}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <p>
+                      <strong>Total:</strong> ${order.totalAmount}
+                    </p>
+
+                    <p>
+                      <strong>Date:</strong>{" "}
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       )}

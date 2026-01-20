@@ -16,7 +16,7 @@ const storedData = () => {
 
 export const CartProvider = ({ children }) => {
   const { data } = useFetch(
-    "https://e-commerce-backend-theta-eosin.vercel.app/products"
+    "https://e-commerce-backend-theta-eosin.vercel.app/products",
   );
 
   const [cartItems, setCartItems] = useState(storedData);
@@ -28,9 +28,13 @@ export const CartProvider = ({ children }) => {
 
   const addToWishlist = (product) => {
     const exists = wishlist.find((item) => item._id === product._id);
-    if (!exists) {
-      setWishlist([...wishlist, product]);
+    if (exists) {
+      toast.info("Already in wishlist ❤️");
+      return;
     }
+
+    setWishlist([...wishlist, product]);
+    toast.success("Added to wishlist ❤️");
   };
 
   const moveToWishlist = (item) => {
@@ -53,8 +57,8 @@ export const CartProvider = ({ children }) => {
   const increaseQty = (id) => {
     setCartItems(
       cartItems.map((item) =>
-        item._id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
+        item._id === id ? { ...item, quantity: item.quantity + 1 } : item,
+      ),
     );
     toast.success("Quantity increased");
   };
@@ -64,8 +68,8 @@ export const CartProvider = ({ children }) => {
       cartItems.map((item) =>
         item._id === id && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
+          : item,
+      ),
     );
     toast.info("Quantity decreased");
   };
@@ -77,7 +81,7 @@ export const CartProvider = ({ children }) => {
 
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
-    0
+    0,
   );
 
   const addToCart = (product) => {
