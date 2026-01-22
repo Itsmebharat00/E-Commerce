@@ -45,19 +45,16 @@ const Header = () => {
               type="search"
               placeholder="Search products..."
               value={searchInput}
-              onChange={(e) => {
-                const value = e.target.value;
-                setSearchInput(value);
-
-                if (value === "") {
-                  applySearch();
-                }
-              }}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
 
-            <button className="btn btn-outline-success ms-2" type="submit">
+            <Link
+              to="/products"
+              className="btn btn-outline-success ms-2"
+              onClick={applySearch}
+            >
               Search
-            </button>
+            </Link>
           </form>
 
           <ul className="navbar-nav ms-auto">
