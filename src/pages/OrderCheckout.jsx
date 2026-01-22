@@ -51,18 +51,28 @@ const OrderCheckout = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h3> Order Checkout</h3>
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => setShowAddressForm(!showAddressForm)}
-        >
-          Add New Address
-        </button>
+      <div className="row align-items-center mb-4 gy-2">
+        <div className="col-12 col-md-4 text-center text-md-start">
+          <h3 className="mb-0">Order Checkout</h3>
+        </div>
 
-        <Link to="/addressManagement" className="nav-link fw-semibold">
-          Address Management
-        </Link>
+        <div className="col-12 col-md-4 text-center">
+          <button
+            className="btn btn-outline-primary w-md-auto"
+            onClick={() => setShowAddressForm(!showAddressForm)}
+          >
+            Add New Address
+          </button>
+        </div>
+
+        <div className="col-12 col-md-4 text-center text-md-end">
+          <Link
+            to="/addressManagement"
+            className="fw-semibold text-decoration-none"
+          >
+            Address Management
+          </Link>
+        </div>
       </div>
 
       <h5 className="mt-3"> Select delivery address:</h5>

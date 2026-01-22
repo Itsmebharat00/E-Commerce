@@ -30,20 +30,24 @@ const UserProfile = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
-        <h3 className="mb-0">User Profile</h3>
+      <div className="row align-items-center mb-4 gy-2">
+        <div className="col-12 col-md-4 text-center text-md-start">
+          <h3 className="mb-0">User Profile</h3>
+        </div>
 
-        <div className="d-flex flex-column flex-sm-row gap-2">
+        <div className="col-12 col-md-4 text-center">
           <button
-            className="btn btn-outline-primary"
+            className="btn btn-outline-primary w-md-auto"
             onClick={() => setShowAddressForm(!showAddressForm)}
           >
             Add New Address
           </button>
+        </div>
 
+        <div className="col-12 col-md-4 text-center text-md-end">
           <Link
             to="/addressManagement"
-            className="btn btn-link fw-semibold p-0"
+            className="fw-semibold text-decoration-none"
           >
             Address Management
           </Link>
