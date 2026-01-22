@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const { data } = useFetch(
-    "https://e-commerce-backend-theta-eosin.vercel.app/products"
+    "https://e-commerce-backend-theta-eosin.vercel.app/products",
   );
 
   console.log(data);
@@ -12,7 +12,7 @@ const Home = () => {
   const categories = data
     ?.map((item) => item.category)
     .filter(
-      (cat, index, arr) => index === arr.findIndex((c) => c.name === cat.name)
+      (cat, index, arr) => index === arr.findIndex((c) => c.name === cat.name),
     );
 
   console.log(categories);

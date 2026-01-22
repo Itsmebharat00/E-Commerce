@@ -30,18 +30,24 @@ const UserProfile = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h3>User Profile</h3>
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => setShowAddressForm(!showAddressForm)}
-        >
-          Add New Address
-        </button>
+      <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+        <h3 className="mb-0">User Profile</h3>
 
-        <Link to="/addressManagement" className="nav-link fw-semibold">
-          Address Management
-        </Link>
+        <div className="d-flex flex-column flex-sm-row gap-2">
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => setShowAddressForm(!showAddressForm)}
+          >
+            Add New Address
+          </button>
+
+          <Link
+            to="/addressManagement"
+            className="btn btn-link fw-semibold p-0"
+          >
+            Address Management
+          </Link>
+        </div>
       </div>
 
       <div className="card mb-4">
