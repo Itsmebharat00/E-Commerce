@@ -9,8 +9,13 @@ const CartContext = createContext();
 const useCartContext = () => useContext(CartContext);
 export default useCartContext;
 
-const storedData = () => {
+const cartData = () => {
   const savedValued = localStorage.getItem("cartItems");
+  return savedValued ? JSON.parse(savedValued) : [];
+};
+
+const wishlistData = () => {
+  const savedValued = localStorage.getItem("wishlist");
   return savedValued ? JSON.parse(savedValued) : [];
 };
 
@@ -19,12 +24,16 @@ export const CartProvider = ({ children }) => {
     "https://e-commerce-backend-theta-eosin.vercel.app/products",
   );
 
-  const [cartItems, setCartItems] = useState(storedData);
-  const [wishlist, setWishlist] = useState([]);
+  const [cartItems, setCartItems] = useState(cartData);
+  const [wishlist, setWishlist] = useState(wishlistData);
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
 
   const addToWishlist = (product) => {
     const exists = wishlist.find((item) => item._id === product._id);
@@ -35,6 +44,10 @@ export const CartProvider = ({ children }) => {
 
     setWishlist([...wishlist, product]);
     toast.success("Added to wishlist ❤️");
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
   };
 
   const moveToWishlist = (item) => {
@@ -118,6 +131,7 @@ export const CartProvider = ({ children }) => {
         removeFromWishlist,
         moveToWishlist,
         moveToCart,
+        clearCart,
       }}
     >
       {children}
