@@ -1,6 +1,5 @@
 /** @format */
 import { useParams, Link } from "react-router-dom";
-import useFetch from "../useFetch";
 import useCartContext from "../contexts/CartContext";
 import useProductContext from "../contexts/ProductContext";
 import { useEffect } from "react";
@@ -19,10 +18,6 @@ const ProductsListing = () => {
 
   const { categoryName } = useParams();
 
-  const { data } = useFetch(
-    "https://e-commerce-backend-theta-eosin.vercel.app/products",
-  );
-
   useEffect(() => {
     if (categoryName && !selectedCategories.includes(categoryName)) {
       setSelectedCategories([categoryName]);
@@ -36,25 +31,6 @@ const ProductsListing = () => {
         : [...prev, category],
     );
   };
-
-  // const filteredProducts = data
-  //   ?.filter((item) => {
-  //     const categoryMatch =
-  //       selectedCategories.length === 0 ||
-  //       selectedCategories.includes(item.category.name);
-
-  //     const ratingMatch = item.rating.rate >= minRating;
-  //     const searchMatch =
-  //       searchQuery === "" ||
-  //       item.title?.toLowerCase().includes(searchQuery?.toLowerCase());
-
-  //     return categoryMatch && ratingMatch && searchMatch;
-  //   })
-  //   .sort((a, b) => {
-  //     if (selectedPrice === "lowToHigh") return a.price - b.price;
-  //     if (selectedPrice === "highToLow") return b.price - a.price;
-  //     return 0;
-  //   });
 
   const categories = [
     "men's clothing",
@@ -190,7 +166,7 @@ const ProductsListing = () => {
 
             {finalProducts?.length === 0 && (
               <h5 className="text-danger mt-5 text-center">
-                No products found
+                No products match your search 🔍
               </h5>
             )}
           </div>
