@@ -52,6 +52,11 @@ export const ProductsProvider = ({ children }) => {
 
   const finalProducts = priceSorting(filteredProducts);
 
+  const resetSearch = () => {
+    setSearchQuery("");
+    setSearchInput("");
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -69,6 +74,8 @@ export const ProductsProvider = ({ children }) => {
         searchInput,
         setSearchInput,
         applySearch,
+        searchQuery,
+        resetSearch,
       }}
     >
       {children}
