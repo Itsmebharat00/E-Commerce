@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const OrderCheckout = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const { cartItems, finalAmount } = useCartContext();
+  const { cartItems, finalAmount, clearCart } = useCartContext();
   const {
     addresses,
     handleSaveAddress,
@@ -18,6 +18,8 @@ const OrderCheckout = () => {
     setShowForm,
     showForm,
   } = useAddressContext();
+
+  const [placedOrder, setPlacedOrder] = useState(null);
 
   const handleOrders = async () => {
     if (!selectedAddress) return;
@@ -40,7 +42,9 @@ const OrderCheckout = () => {
 
       if (res.ok) {
         console.log("Saved order:");
+        setPlacedOrder(orderData); // ✅ save order snapshot
         setOrderPlaced(true);
+        clearCart(); // ✅ clear cart
       } else {
         console.log("Server error:");
       }
@@ -214,17 +218,17 @@ const OrderCheckout = () => {
         </div>
       )}
 
-      {orderPlaced && (
+      {orderPlaced && placedOrder && (
         <div className="card mt-3">
           <div className="card-body">
             <h5 className="card-title"> Order Summary </h5>
-            <p className="mb-1">
-              {" "}
-              <strong> Cart Items: </strong> {cartItems.length}{" "}
+            <p>
+              <strong>Items Ordered:</strong> {placedOrder.items.length}
             </p>
-            <p className="mb-3">
-              {" "}
-              <strong> Total Amount: </strong> ${finalAmount.toFixed(2)}{" "}
+
+            <p>
+              <strong>Total Amount:</strong> $
+              {placedOrder.totalAmount.toFixed(2)}
             </p>
           </div>
         </div>
