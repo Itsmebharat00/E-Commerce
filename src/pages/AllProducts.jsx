@@ -13,6 +13,7 @@ const AllProducts = () => {
     setMinRating,
     selectedPrice,
     setSelectedPrice,
+    searchQuery,
   } = useProductContext();
 
   console.log(data);
@@ -21,11 +22,14 @@ const AllProducts = () => {
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
-        : [...prev, category]
+        : [...prev, category],
     );
   };
 
   let headingText = "All Products";
+  if (searchQuery) {
+    headingText = `Search results for "${searchQuery}"`;
+  }
 
   if (selectedCategories.length === 1) {
     headingText = `${selectedCategories[0]} Products`;
